@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080308">
+<meta name="description" content="Narayani Chaudhary (NC) — Cybersecurity researcher, developer and digital forensics enthusiast.">
+<title>Narayani Chaudhary | NC — Cybersecurity & Digital Forensics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080308;--panel:#110711;--panel2:#190b17;--pink:#ff168f;--hot:#ff43b5;--pale:#ffb5df;--white:#fff2fa;--muted:#c3a9bb;--line:#ff168f55;--glow:0 0 22px #ff168f55,0 0 55px #ff168f22;--mono:"DM Mono",monospace;--sans:"Space Grotesk",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:82px}
+body{background:var(--bg);color:var(--white);font-family:var(--sans);overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(#ff168f0a 1px,transparent 1px),linear-gradient(90deg,#ff168f0a 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(#000,transparent 90%)}
+body:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:repeating-linear-gradient(0deg,#0000 0 3px,#ff168f08 4px);opacity:.3}
+a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}::selection{background:var(--pink);color:#10000a}
+#progress{position:fixed;z-index:1000;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--pink),#fff,var(--hot));box-shadow:var(--glow)}
+.container{width:min(1200px,92%);margin:auto}
+nav{height:72px;position:fixed;z-index:100;inset:0 0 auto;background:#080308e8;border-bottom:1px solid var(--line);backdrop-filter:blur(16px)}
+.nav-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:22px}
+.brand{font:700 25px var(--mono);color:var(--pink);text-shadow:var(--glow);white-space:nowrap}
+.nav-links{display:flex;gap:clamp(12px,2.5vw,32px);list-style:none}
+.nav-links a{font:11px var(--mono);color:#ead8e3;transition:.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--hot);text-shadow:0 0 12px var(--pink)}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.play-nav,.menu-btn{border:1px solid var(--pink);background:#ff168f12;color:var(--pale);padding:10px 14px;font:11px var(--mono);cursor:pointer;box-shadow:inset 0 0 15px #ff168f14,0 0 14px #ff168f25;transition:.25s}
+.play-nav:hover,.menu-btn:hover{background:var(--pink);color:#15000c;box-shadow:var(--glow)}
+.menu-btn{display:none}
+.hero{min-height:740px;padding:120px 0 60px;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:35px;position:relative}
+.status{font:11px var(--mono);letter-spacing:1.5px;color:var(--white)}
+.status i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pink);box-shadow:0 0 12px var(--pink);margin-left:7px}
+h1{font-size:clamp(42px,5.4vw,72px);line-height:1.04;letter-spacing:-3px;margin:22px 0 15px}
+h1 .accent{color:var(--pink);text-shadow:0 0 24px #ff168f99}
+.cursor-blink{display:inline-block;width:9px;height:.85em;background:var(--pink);margin-left:8px;animation:blink .8s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.roleline{font:14px var(--mono);color:#ffe5f4;margin:15px 0}
+.terminal-line{border:1px solid var(--pink);padding:10px 12px;color:var(--white);font:12px var(--mono);box-shadow:inset 0 0 18px #ff168f13,0 0 16px #ff168f20;margin:18px 0;max-width:600px}
+.terminal-line span{color:var(--pink)}
+.hero-copy{font:13px/1.8 var(--mono);color:var(--muted);max-width:590px}
+.hero-buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:25px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:13px 17px;border:1px solid var(--pink);font:11px var(--mono);transition:.25s;cursor:pointer}
+.btn.primary{background:var(--pink);color:#16000d;font-weight:700;box-shadow:var(--glow)}
+.btn:hover{transform:translateY(-3px);box-shadow:var(--glow);background:var(--pink);color:#16000d}
+.stats{display:flex;gap:0;margin-top:32px;flex-wrap:wrap}
+.stat{min-width:105px;padding:0 15px;border-left:1px solid var(--pink);display:flex;flex-direction:column;gap:5px}
+.stat:first-child{padding-left:0}
+.stat strong{font-size:13px}.stat small{font:10px var(--mono);color:var(--muted)}
+.hero-visual{min-height:540px;display:grid;place-items:center;position:relative;perspective:1000px}
+.portrait-frame{position:relative;width:min(420px,88%);height:490px;padding:7px;clip-path:polygon(14% 0,86% 0,100% 16%,100% 84%,86% 100%,14% 100%,0 84%,0 16%);background:linear-gradient(135deg,#ffb5df,var(--pink),#6a063e,var(--hot));filter:drop-shadow(0 0 25px #ff168f77);animation:framePulse 4s ease-in-out infinite}
+.portrait-frame:before{content:"";position:absolute;inset:9px;clip-path:inherit;border:1px solid #fff9;z-index:2;pointer-events:none}
+.portrait-frame img{width:100%;height:100%;object-fit:cover;object-position:center 20%;clip-path:polygon(14% 0,86% 0,100% 16%,100% 84%,86% 100%,14% 100%,0 84%,0 16%);filter:contrast(1.04) saturate(.88)}
+@keyframes framePulse{50%{filter:drop-shadow(0 0 40px #ff168fbb)}}
+.orbit{position:absolute;width:490px;height:490px;border:1px dashed #ff43b577;border-radius:50%;animation:spin 32s linear infinite}
+.orbit:before,.orbit:after{content:"";position:absolute;width:9px;height:9px;border-radius:50%;background:var(--pink);box-shadow:0 0 18px var(--pink)}
+.orbit:before{top:55px;right:65px}.orbit:after{bottom:50px;left:55px;background:#fff}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hud{position:absolute;padding:11px 13px;background:#120711e8;border:1px solid var(--pink);box-shadow:var(--glow);font:10px/1.6 var(--mono);color:var(--pale);z-index:3}
+.hud.top{top:35px;right:-5px}.hud.bottom{bottom:35px;left:-8px}
+.hud b{color:var(--white)}
+.code-rain{position:absolute;right:0;top:20%;font:11px/1.9 var(--mono);color:#ff168f99;writing-mode:vertical-rl;letter-spacing:2px}
+.marquee{border-block:1px solid var(--pink);padding:14px 0;overflow:hidden;background:#ff168f0b;box-shadow:0 0 20px #ff168f12}
+.marquee-track{display:flex;width:max-content;animation:marquee 35s linear infinite}
+.marquee span{padding:0 24px;font:11px var(--mono);white-space:nowrap;color:#ffe1f1}
+.marquee b{color:var(--pink);padding-left:20px}
+@keyframes marquee{to{transform:translateX(-50%)}}
+section{padding:90px 0;position:relative}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:28px}
+.eyebrow{font:11px var(--mono);color:var(--pink);letter-spacing:2px;margin-bottom:10px}
+.section-title{font-size:clamp(29px,4vw,43px);letter-spacing:-1.5px}
+.section-title:before{content:"// ";color:var(--pink)}
+.section-sub{font:11px var(--mono);color:var(--muted);margin-top:8px}
+.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:35px}
+.about-copy{font:13px/1.9 var(--mono);color:var(--muted)}
+.about-copy p+p{margin-top:15px}
+.info-card,.skill-card,.project-card,.research-card,.contact-card{background:linear-gradient(145deg,#1a0b18,#0d060d);border:1px solid #ff168f77;box-shadow:inset 0 0 24px #ff168f0a,0 12px 35px #0008;position:relative;overflow:hidden}
+.info-card{padding:23px}
+.card-label{font:11px var(--mono);color:var(--pink);margin-bottom:15px}
+.info-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #ff168f30;font:11px var(--mono)}
+.info-row span:first-child{color:var(--muted)}.info-row span:last-child{text-align:right}
+.skills-section{background:linear-gradient(180deg,#100610,#080308);border-block:1px solid #ff168f44}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.skill-card{padding:23px;min-height:205px;transition:.3s;clip-path:polygon(7% 0,93% 0,100% 10%,100% 90%,93% 100%,7% 100%,0 90%,0 10%)}
+.skill-card:hover,.project-card:hover,.research-card:hover{transform:translateY(-7px) rotateX(2deg);box-shadow:0 0 25px #ff168f55,0 20px 45px #0009;border-color:#ff9bd1}
+.skill-icon{font-size:27px;color:var(--pink);text-shadow:0 0 14px var(--pink);margin-bottom:12px}
+.skill-card h3{font-size:16px;margin-bottom:7px}
+.purpose{font:10px var(--mono);color:var(--pale);margin-bottom:13px}
+.skill-card p{font:10px/1.8 var(--mono);color:var(--muted)}
+.project-grid{display:grid;grid-template-columns:1.45fr 1fr 1fr;gap:14px}
+.project-card{padding:22px;min-height:190px;transition:.3s}
+.project-card.featured{grid-row:span 2;min-height:400px;background:radial-gradient(circle at 80% 35%,#ff168f22,transparent 45%),linear-gradient(145deg,#25091d,#0d060d)}
+.project-card h3{font-size:21px;margin:12px 0}
+.project-card p{font:11px/1.8 var(--mono);color:var(--muted)}
+.project-type{font:9px var(--mono);letter-spacing:1px;color:var(--pink);border:1px solid #ff168f66;padding:5px 8px;display:inline-block}
+.project-tags{display:flex;gap:6px;flex-wrap:wrap;margin:15px 0}
+.project-tags span{font:9px var(--mono);background:#ff168f18;border:1px solid #ff168f44;padding:5px 7px}
+.project-link{display:inline-block;margin-top:12px;color:var(--pale);font:10px var(--mono);border-bottom:1px solid var(--pink);padding-bottom:4px}
+.project-symbol{font-size:46px;color:var(--pink);text-shadow:0 0 22px var(--pink);margin:22px 0}
+.research-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.research-card{padding:20px;transition:.3s}
+.research-card h3{font-size:15px;margin-bottom:10px}
+.research-card p{font:10px/1.8 var(--mono);color:var(--muted)}
+.contact-card{padding:35px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.contact-card p{font:12px/1.8 var(--mono);color:var(--muted);max-width:600px}
+.socials{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.socials a{font:10px var(--mono);padding:9px 12px;border:1px solid #ff168f66;color:var(--pale)}
+.socials a:hover{background:var(--pink);color:#15000c}
+footer{padding:22px 0;border-top:1px solid #ff168f55;font:10px var(--mono);color:var(--muted)}
+.footer-inner{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+footer b{color:var(--pink)}
+/* Endless mini game */
+.game-modal{position:fixed;inset:0;z-index:500;display:none;place-items:center;padding:18px;background:#050105ed;backdrop-filter:blur(12px)}
+.game-modal.open{display:grid}
+.game-window{width:min(650px,100%);background:#100710;border:1px solid var(--pink);box-shadow:var(--glow);padding:20px}
+.game-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.game-head h2{font:18px var(--mono);color:var(--pink)}
+.close{background:none;border:1px solid #ff168f77;padding:6px 10px;cursor:pointer}
+.game-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.game-stat{padding:9px;background:#ff168f0c;border:1px solid #ff168f44;text-align:center}
+.game-stat small{display:block;font:9px var(--mono);color:var(--muted)}.game-stat b{font:15px var(--mono);color:var(--pink)}
+#board{height:350px;position:relative;overflow:hidden;border:1px solid #ff168f88;background:linear-gradient(#170816,#080308);touch-action:pan-y}
+#board:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#ff168f12 1px,transparent 1px),linear-gradient(90deg,#ff168f12 1px,transparent 1px);background-size:28px 28px}
+.player{position:absolute;bottom:17px;width:62px;height:15px;left:calc(50% - 31px);background:linear-gradient(90deg,#ff168f,#fff,#ff168f);box-shadow:0 0 18px #ff168f;clip-path:polygon(15% 0,85% 0,100% 100%,0 100%)}
+.fall{position:absolute;top:-30px;width:22px;height:22px;display:grid;place-items:center;font-size:20px;text-shadow:0 0 12px currentColor}
+.good{color:#fff}.bad{color:#ff168f}
+.overlay{position:absolute;inset:0;z-index:4;display:grid;place-items:center;text-align:center;background:#080308e8;padding:20px}
+.overlay strong{font:18px var(--mono);color:var(--pink)}
+.overlay p{font:11px/1.9 var(--mono);color:var(--muted);margin:13px 0}
+.game-help{font:10px var(--mono);color:var(--muted);margin-top:10px}
+@media(max-width:900px){.hero{grid-template-columns:1fr;gap:0;padding-top:120px}.hero-visual{min-height:500px;grid-row:1}.hero-content{grid-row:2}.hero{min-height:auto}.code-rain{display:none}.project-grid{grid-template-columns:1fr 1fr}.project-card.featured{grid-row:auto;grid-column:span 2}.about-grid{grid-template-columns:1fr}.nav-links{gap:12px}}
+@media(max-width:650px){.nav-links{display:none;position:absolute;top:72px;left:0;right:0;padding:20px;background:#100610;border-bottom:1px solid var(--pink);flex-direction:column}.nav-links.show{display:flex}.menu-btn{display:block}.play-nav{padding:9px}.hero-visual{min-height:390px}.portrait-frame{height:350px;width:75%}.orbit{width:380px;height:380px}.hud.top{right:-4px;top:12px}.hud.bottom{left:-5px;bottom:12px}.stats{gap:15px}.stat{min-width:90px}.skills-grid,.research-grid{grid-template-columns:1fr 1fr}.project-grid{grid-template-columns:1fr}.project-card.featured{grid-column:auto}.section-head{align-items:flex-start;flex-direction:column}section{padding:70px 0}}
+@media(max-width:420px){.skills-grid,.research-grid{grid-template-columns:1fr}.game-stats{grid-template-columns:repeat(2,1fr)}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<nav><div class="container nav-inner">
+ <a class="brand" href="#home">&lt;/NC&gt;</a>
+ <ul class="nav-links" id="navLinks">
+  <li><a href="#home">[ Home ]</a></li><li><a href="#about">About</a></li><li><a href="#skills">Skills</a></li><li><a href="#projects">Projects</a></li><li><a href="#research">Research</a></li><li><a href="#contact">Contact</a></li>
+ </ul>
+ <div class="nav-actions"><button class="play-nav" id="openGame">▣ PLAY GAME　›</button><button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button></div>
+</div></nav>
+
+<main>
+<section class="container hero" id="home">
+ <div class="hero-content">
+  <div class="status">[ STATUS : ONLINE ]<i></i></div>
+  <h1>Hi, I’m<br>Narayani <span class="accent">(NC)</span><span class="cursor-blink"></span></h1>
+  <div class="roleline">Cybersecurity Researcher&nbsp; | &nbsp;Developer&nbsp; | &nbsp;Digital Forensics</div>
+  <div class="terminal-line"><span>&gt;</span> <span id="typed">whoami</span><span class="cursor-blink"></span></div>
+  <p class="hero-copy">M.Tech (IT – Cyber Security) researcher at IGDTUW, working on AI-powered cyber forensics, threat detection and digital investigation. I build, break, analyse and secure systems with a research-driven mindset.</p>
+  <div class="hero-buttons">
+   <a class="btn primary" href="#projects">➜ Explore My Work</a>
+   <a class="btn" href="assets/resume.pdf" target="_blank" rel="noopener">⇩ Download Resume</a>
+   <a class="btn" href="#contact">➤ Contact Me</a>
+  </div>
+  <div class="stats">
+   <div class="stat"><strong> M.Tech</strong><small>IGDTUW</small></div>
+   <div class="stat"><strong>Research</strong><small>Cyber Forensics</small></div>
+   <div class="stat"><strong>15+</strong><small>Projects & Prototypes</small></div>
+   <div class="stat"><strong>AI × Security</strong><small>Research Focus</small></div>
+   <div class="stat"><strong id="views">—</strong><small>Portfolio Views</small></div>
+  </div>
+ </div>
+ <div class="hero-visual">
+  <div class="orbit"></div>
+  <div class="portrait-frame"><img src="assets/narayani.jpg" alt="Narayani Chaudhary portrait"></div>
+  <div class="hud top">&gt; exploit()<br>&gt; analyze()<br>&gt; forensics()<br>&gt; patch()<br>&gt; secure()</div>
+  <div class="hud bottom">▣ ACCESS GRANTED<br><b>● ● ● ● ● ● ▬ ▬</b></div>
+  <div class="code-rain">01001001　ROOT　010101　TRACE　0101</div>
+ </div>
+</section>
+
+<div class="marquee"><div class="marquee-track">
+ <span>Cyber Forensics <b>//</b></span><span>Threat Hunting <b>//</b></span><span>AI / ML <b>//</b></span><span>Federated Learning <b>//</b></span><span>Incident Response <b>//</b></span><span>Digital Investigation <b>//</b></span><span>Secure Bharat <b>//</b></span>
+ <span>Cyber Forensics <b>//</b></span><span>Threat Hunting <b>//</b></span><span>AI / ML <b>//</b></span><span>Federated Learning <b>//</b></span><span>Incident Response <b>//</b></span><span>Digital Investigation <b>//</b></span><span>Secure Bharat <b>//</b></span>
+</div></div>
+
+<section class="container" id="about">
+ <div class="section-head"><div><div class="eyebrow">01 / PROFILE</div><h2 class="section-title">About the operator</h2><p class="section-sub">A little context behind the code.</p></div></div>
+ <div class="about-grid">
+  <div class="about-copy">
+   <p>I’m <strong>Narayani Chaudhary (NC)</strong>, an M.Tech researcher in Information Technology (Cyber Security) at <strong>Indira Gandhi Delhi Technical University for Women (IGDTUW)</strong>.</p>
+   <p>My interests sit at the intersection of <strong>digital forensics, cybersecurity, artificial intelligence and privacy-aware machine learning</strong>. I enjoy turning research ideas into practical prototypes, investigation workflows and tools that make security analysis more explainable.</p>
+   <p>My current work explores forensic automation, threat analysis, evidence integrity, anti-forensic detection and federated learning. I’m especially interested in building systems that are useful to investigators—not just impressive in a demo.</p>
+  </div>
+  <div class="info-card">
+   <div class="card-label">&gt; operator_profile.json</div>
+   <div class="info-row"><span>IDENTITY</span><span>Narayani (NC)</span></div>
+   <div class="info-row"><span>EDUCATION</span><span>M.Tech · IT (Cyber Security)</span></div>
+   <div class="info-row"><span>INSTITUTE</span><span>IGDTUW, New Delhi</span></div>
+   <div class="info-row"><span>DOMAIN</span><span>Cyber Forensics</span></div>
+   <div class="info-row"><span>INTERESTS</span><span>AI · DFIR · Threat Hunting</span></div>
+   <div class="info-row"><span>MODE</span><span>RESEARCH × BUILD × SECURE</span></div>
+  </div>
+ </div>
+</section>
+
+<section class="skills-section" id="skills"><div class="container">
+ <div class="section-head"><div><div class="eyebrow">02 / TOOLKIT</div><h2 class="section-title">Skills with purpose</h2><p class="section-sub">Technologies I use to research, build, investigate and secure.</p></div><span class="project-type">&lt; tools_list.sh /&gt;</span></div>
+ <div class="skills-grid">
+  <article class="skill-card"><div class="skill-icon">&lt;/&gt;</div><h3>Programming</h3><div class="purpose">Build · Automate · Prototype</div><p>Python · Java · C/C++ · Rust · JavaScript · SQL · Bash</p></article>
+  <article class="skill-card"><div class="skill-icon">⌘</div><h3>AI / ML</h3><div class="purpose">Train · Evaluate · Explain</div><p>TensorFlow · PyTorch · Scikit-learn · OpenCV · NumPy · Pandas · XAI · CNNs</p></article>
+  <article class="skill-card"><div class="skill-icon">⬡</div><h3>Cybersecurity</h3><div class="purpose">Discover · Analyse · Defend</div><p>Kali Linux · Nmap · Wireshark · Metasploit · Burp Suite · OSINT · SIEM concepts · Threat Hunting</p></article>
+  <article class="skill-card"><div class="skill-icon">◉</div><h3>Digital Forensics</h3><div class="purpose">Acquire · Preserve · Examine</div><p>Disk Imaging · Autopsy · FTK Imager · Magnet AXIOM exposure · Metadata · Evidence Hashing · Timeline Analysis</p></article>
+  <article class="skill-card"><div class="skill-icon">▱</div><h3>Web & Backend</h3><div class="purpose">Design · Develop · Deploy</div><p>React · Flask · FastAPI · Streamlit · Node.js · REST APIs · SQLite · Docker</p></article>
+  <article class="skill-card"><div class="skill-icon">⌬</div><h3>Embedded & IoT</h3><div class="purpose">Prototype · Connect · Test</div><p>Arduino · Raspberry Pi · ESP32 concepts · Sensors · EV3 · Robotics · IoT Security</p></article>
+ </div>
+</div></section>
+
+<section class="container" id="projects">
+ <div class="section-head"><div><div class="eyebrow">03 / SELECTED BUILDS</div><h2 class="section-title">Featured projects</h2><p class="section-sub">Research-driven prototypes and tools for real-world cybersecurity investigation.</p></div><span class="project-type">PROJECTS / ACTIVE</span></div>
+ <div class="project-grid">
+  <article class="project-card featured">
+   <span class="project-type">★ FLAGSHIP · CYBER FORENSICS</span>
+   <div class="project-symbol">⬡</div>
+   <h3>AD-TAPS</h3>
+   <p>Adaptive Log Detection, Threat Analysis, Profiling and Self-Learning Framework for Cyber Forensics. A proposed integrated framework combining hybrid intrusion detection, threat intelligence, explainable AI and automated evidence workflows.</p>
+   <div class="project-tags"><span>AI / ML</span><span>XAI</span><span>Threat Intel</span><span>Forensic Automation</span></div>
+   <a class="project-link" href="#contact">Discuss the project ↗</a>
+  </article>
+  <article class="project-card"><span class="project-type">ANTI-FORENSICS</span><h3>AFDF</h3><p>Anti-Forensic Detection Framework exploring detection of artefact tampering and evidence manipulation.</p><div class="project-tags"><span>Python</span><span>Forensics</span></div></article>
+  <article class="project-card"><span class="project-type">AI × FORENSICS</span><h3>AICYFIS</h3><p>AI-powered cyber forensic investigation system concept focused on assisting digital evidence analysis.</p><div class="project-tags"><span>AI</span><span>Investigation</span></div></article>
+  <article class="project-card"><span class="project-type">PRIVACY-AWARE AI</span><h3>Federated Learning</h3><p>Research exploration of collaborative learning strategies across distributed and heterogeneous datasets.</p><div class="project-tags"><span>FedAvg</span><span>FedProx</span><span>FedYogi</span></div></article>
+  <article class="project-card"><span class="project-type">MEDIA FORENSICS</span><h3>Deepfake-AFDF</h3><p>Research prototype direction combining deepfake detection with anti-forensic analysis.</p><div class="project-tags"><span>Computer Vision</span><span>OpenCV</span></div></article>
+ </div>
+</section>
+
+<section class="container" id="research">
+ <div class="section-head"><div><div class="eyebrow">04 / RESEARCH LOG</div><h2 class="section-title">Research interests</h2><p class="section-sub">Questions I keep investigating.</p></div></div>
+ <div class="research-grid">
+  <article class="research-card"><h3>Explainable Cyber Forensics</h3><p>Making automated threat and evidence analysis more interpretable, traceable and useful for forensic workflows.</p></article>
+  <article class="research-card"><h3>Federated Learning</h3><p>Studying privacy-aware collaborative learning, non-IID data challenges and optimisation strategies.</p></article>
+  <article class="research-card"><h3>Threat Detection & Hunting</h3><p>Exploring network and host-based signals, log analysis, intrusion detection and investigation-ready reporting.</p></article>
+ </div>
+</section>
+
+<section class="container" id="contact">
+ <div class="section-head"><div><div class="eyebrow">05 / ESTABLISH CONNECTION</div><h2 class="section-title">Let’s connect</h2><p class="section-sub">Have a research idea, collaboration or cybersecurity opportunity?</p></div></div>
+ <div class="contact-card"><div><h3 style="font-size:24px;margin-bottom:10px">Open a secure channel.</h3><p>I’m interested in meaningful conversations around cyber forensics, AI for security, research collaborations, internships and practical security engineering.</p>
+  <div class="socials"><a href="mailto:its.nc2408@gmail.com">EMAIL</a><a href="https://www.linkedin.com/in/narayani-chaudhary/" target="_blank" rel="noopener">LINKEDIN</a><a href="https://github.com/code-with-nc" target="_blank" rel="noopener">GITHUB</a><a href="https://scholar.google.com/citations?user=vGpG1MEAAAAJ" target="_blank" rel="noopener">GOOGLE SCHOLAR</a></div>
+ </div><a class="btn primary" href="mailto:its.nc2408@gmail.com">SEND MESSAGE ↗</a></div>
+</section>
+</main>
+<footer><div class="container footer-inner"><span>/// SYSTEM : NC_PORTFOLIO　|　MODE : RESEARCH × BUILD × SECURE</span><span>© <span id="year"></span> Narayani (NC)　|　<span id="visitCount">PORTFOLIO VIEWS: —</span></span></div></footer>
+
+<div class="game-modal" id="gameModal" aria-hidden="true"><div class="game-window">
+ <div class="game-head"><h2>▣ FIREWALL FRENZY // ENDLESS MODE</h2><button class="close" id="closeGame">✕ CLOSE</button></div>
+ <div class="game-stats">
+  <div class="game-stat"><small>SCORE</small><b id="score">0</b></div><div class="game-stat"><small>ALIVE</small><b id="alive">00:00</b></div><div class="game-stat"><small>BEST SCORE</small><b id="bestScore">0</b></div><div class="game-stat"><small>BEST TIME</small><b id="bestTime">00:00</b></div>
+ </div>
+ <div id="board"><div class="player" id="player"></div><div class="overlay" id="gameOverlay"><div><strong>ACCESS THE FIREWALL</strong><p>Catch pink data packets for +10 points.<br>Avoid malware. You have 3 shields.<br>Move with ← → / A D or drag on the board.<br><br>NO COUNTDOWN · SURVIVE AS LONG AS YOU CAN</p><button class="btn primary" id="startGame">START DEFENCE ↗</button></div></div></div>
+ <div class="game-help">TIP: On mobile, drag your finger across the game field. Best score and longest survival time are saved in this browser.</div>
+</div></div>
+
+<script>
+const $=s=>document.querySelector(s);
+$('#year').textContent=new Date().getFullYear();
+const menu=$('#menuBtn'),links=$('#navLinks');
+menu.addEventListener('click',()=>links.classList.toggle('show'));
+links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>links.classList.remove('show')));
+addEventListener('scroll',()=>{
+ const h=document.documentElement;$('#progress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+},{passive:true});
+const phrases=['whoami','analyse --evidence','hunt --threats','secure --systems'];
+let phrase=0,pos=0,back=false;
+function typeLoop(){const el=$('#typed'),s=phrases[phrase];el.textContent=s.slice(0,pos);if(!back){pos++;if(pos>s.length){back=true;setTimeout(typeLoop,950);return}}else{pos--;if(pos<0){back=false;phrase=(phrase+1)%phrases.length;pos=0}}setTimeout(typeLoop,back?45:90)}
+typeLoop();
+// Portfolio view counter (shared public counter; local fallback if unavailable).
+(async()=>{try{const r=await fetch('https://counterapi.com/api/narayanichaudhary.netlify.app/view/portfolio');const d=await r.json();if(d.value!==undefined){$('#views').textContent=Number(d.value).toLocaleString();$('#visitCount').textContent='PORTFOLIO VIEWS: '+Number(d.value).toLocaleString();return}}catch(e){}try{let n=Number(localStorage.getItem('ncLocalViews')||0)+1;localStorage.setItem('ncLocalViews',n);$('#views').textContent=n.toLocaleString()+'*';$('#visitCount').textContent='PORTFOLIO VIEWS: '+n.toLocaleString()+'*'}catch(e){$('#views').textContent='—'}})();
+// Endless survival mini-game.
+const modal=$('#gameModal'),board=$('#board'),player=$('#player'),overlay=$('#gameOverlay');
+let active=false,score=0,seconds=0,shields=3,x=0,items=[],keys={},lastSpawn=0,lastFrame=0,raf=0,clock=0;
+let best=0,bestSeconds=0;
+try{best=Number(localStorage.getItem('ncFirewallBest')||0);bestSeconds=Number(localStorage.getItem('ncFirewallBestTime')||0)}catch(e){}
+const fmt=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
+function showRecords(){$('#bestScore').textContent=best;$('#bestTime').textContent=fmt(bestSeconds)}
+showRecords();
+function openGame(){modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';setupGame()}
+function closeGame(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';stopGame()}
+$('#openGame').addEventListener('click',openGame);$('#closeGame').addEventListener('click',closeGame);
+modal.addEventListener('click',e=>{if(e.target===modal)closeGame()});
+function stopGame(){active=false;cancelAnimationFrame(raf);clearInterval(clock);items.forEach(i=>i.el.remove());items=[]}
+function setupGame(){stopGame();score=0;seconds=0;shields=3;$('#score').textContent='0';$('#alive').textContent='00:00';$('#overlay');overlay.style.display='grid';overlay.innerHTML='<div><strong>ACCESS THE FIREWALL</strong><p>Catch pink data packets for +10 points.<br>Avoid malware. You have 3 shields.<br>Move with ← → / A D or drag on the board.<br><br>NO COUNTDOWN · SURVIVE AS LONG AS YOU CAN</p><button class="btn primary" id="startGame">START DEFENCE ↗</button></div>';$('#startGame').addEventListener('click',startGame)}
+function startGame(){setupGame();active=true;overlay.style.display='none';x=(board.clientWidth-62)/2;setPlayer();lastSpawn=0;lastFrame=0;clock=setInterval(()=>{if(active){seconds++;$('#alive').textContent=fmt(seconds)}},1000);raf=requestAnimationFrame(loop)}
+function setPlayer(){x=Math.max(0,Math.min(board.clientWidth-62,x));player.style.left=x+'px'}
+function spawn(){const good=Math.random()>.3,el=document.createElement('div');el.className='fall '+(good?'good':'bad');el.textContent=good?'✦':'☣';const ix=Math.random()*(board.clientWidth-24);el.style.left=ix+'px';el.style.top='-28px';board.appendChild(el);items.push({el,x:ix,y:-28,good,speed:2+Math.random()*2+Math.min(seconds*.025,3)})}
+function loop(ts){if(!active)return;const dt=Math.min(32,ts-(lastFrame||ts));lastFrame=ts;if(ts-lastSpawn>Math.max(260,720-Math.min(seconds*3,350))){spawn();lastSpawn=ts}
+ const pr=player.getBoundingClientRect(),br=board.getBoundingClientRect(),px=pr.left-br.left,py=pr.top-br.top;
+ items=items.filter(it=>{it.y+=it.speed*dt/16.67;it.el.style.top=it.y+'px';const hit=it.y+20>=py&&it.y<py+20&&it.x+20>px&&it.x<px+62;if(hit){it.el.remove();if(it.good){score+=10;$('#score').textContent=score}else{shields--;if(shields<=0)finish()}return false}if(it.y>board.clientHeight){it.el.remove();return false}return true});
+ if(active)raf=requestAnimationFrame(loop)}
+function finish(){if(!active)return;stopGame();const newBest=score>best,newTime=seconds>bestSeconds;if(newBest){best=score;try{localStorage.setItem('ncFirewallBest',best)}catch(e){}}if(newTime){bestSeconds=seconds;try{localStorage.setItem('ncFirewallBestTime',bestSeconds)}catch(e){}}showRecords();overlay.style.display='grid';overlay.innerHTML=`<div><strong>SHIELDS DOWN // RUN COMPLETE</strong><p>DATA SECURED: ${score} POINTS<br>SURVIVAL TIME: ${fmt(seconds)}<br>BEST SCORE: ${best}${newBest?' · NEW RECORD!':''}<br>LONGEST TIME: ${fmt(bestSeconds)}${newTime?' · NEW RECORD!':''}</p><button class="btn primary" id="again">PLAY AGAIN ↗</button></div>`;$('#again').addEventListener('click',startGame)}
+addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','a','A','d','D'].includes(e.key)&&active){e.preventDefault();keys[e.key]=true}if(e.key==='Escape'&&modal.classList.contains('open'))closeGame()});
+addEventListener('keyup',e=>keys[e.key]=false);
+function keyMove(){if(active){if(keys.ArrowLeft||keys.a||keys.A)x-=6;if(keys.ArrowRight||keys.d||keys.D)x+=6;setPlayer()}requestAnimationFrame(keyMove)}keyMove();
+function pointerMove(e){if(!active)return;const r=board.getBoundingClientRect();x=e.clientX-r.left-31;setPlayer()}
+board.addEventListener('pointerdown',e=>{if(active){board.setPointerCapture?.(e.pointerId);pointerMove(e)}});
+board.addEventListener('pointermove',e=>{if(active&&e.buttons)pointerMove(e)});
+if(matchMedia('(pointer:fine)').matches){document.querySelectorAll('.skill-card,.project-card,.info-card,.research-card,.contact-card').forEach(card=>{card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect(),a=(e.clientX-r.left)/r.width,b=(e.clientY-r.top)/r.height;card.style.transform=`perspective(900px) rotateX(${(0.5-b)*5}deg) rotateY(${(a-.5)*7}deg) translateY(-4px)`});card.addEventListener('pointerleave',()=>card.style.transform='')})}
+</script>
+</body>
+</html>
