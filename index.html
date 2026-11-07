@@ -771,6 +771,11 @@ section { padding: 88px 0; }
 footer { color: #c9bfd7; border-top: 1px solid rgba(197,167,245,.30); font: 10px/1.9 var(--mono); }
 footer b { color: #d7bfff; }
 
+/* Canvas game rendering: responsive without changing the game panel design. */
+#board { position: relative; isolation: isolate; }
+#gameCanvas { z-index: 1; pointer-events: none; }
+#board .overlay { z-index: 4; }
+
 /* Mini-game */
 .game-modal { background: rgba(10,7,15,.86); backdrop-filter: blur(12px); }
 .game-window {
@@ -1095,32 +1100,170 @@ function typeLoop(){const el=$('#typed'),s=phrases[phrase];el.textContent=s.slic
 typeLoop();
 // Portfolio view counter (shared public counter; local fallback if unavailable).
 (async()=>{try{const r=await fetch('https://counterapi.com/api/narayanichaudhary.netlify.app/view/portfolio');const d=await r.json();if(d.value!==undefined){$('#views').textContent=Number(d.value).toLocaleString();return}}catch(e){}try{let n=Number(localStorage.getItem('ncLocalViews')||0)+1;localStorage.setItem('ncLocalViews',n);$('#views').textContent=n.toLocaleString()+'*';$('#visitCount').textContent='PORTFOLIO VIEWS: '+n.toLocaleString()+'*'}catch(e){}})();
-// Endless survival mini-game.
+// Firewall Frenzy — canvas-based, responsive and frame-rate independent.
 const modal=$('#gameModal'),board=$('#board'),player=$('#player'),overlay=$('#gameOverlay');
-let active=false,score=0,seconds=0,shields=3,x=0,items=[],keys={},lastSpawn=0,lastFrame=0,raf=0,clock=0;
-let best=0,bestSeconds=0;
+const canvas=document.createElement('canvas');
+canvas.id='gameCanvas';
+canvas.setAttribute('aria-label','Firewall Frenzy game field');
+canvas.setAttribute('role','img');
+Object.assign(canvas.style,{position:'absolute',inset:'0',width:'100%',height:'100%',display:'block'});
+board.insertBefore(canvas,board.firstChild);
+player.style.display='none';
+const ctx=canvas.getContext('2d',{alpha:true});
+let active=false,score=0,seconds=0,shields=3,x=0,items=[],keys={};
+let raf=0,lastFrame=0,elapsed=0,spawnElapsed=0,lastDisplayedSecond=-1;
+let best=0,bestSeconds=0,boardWidth=0,boardHeight=0,dpr=1,pointerDown=false;
 try{best=Number(localStorage.getItem('ncFirewallBest')||0);bestSeconds=Number(localStorage.getItem('ncFirewallBestTime')||0)}catch(e){}
 const fmt=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
 function showRecords(){$('#bestScore').textContent=best;$('#bestTime').textContent=fmt(bestSeconds)}
 showRecords();
-function openGame(){modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';setupGame()}
-function closeGame(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';stopGame()}
-$('#openGame').addEventListener('click',openGame);$('#closeGame').addEventListener('click',closeGame);
+
+function resizeGame(){
+  const r=board.getBoundingClientRect();
+  const nextWidth=Math.max(1,r.width),nextHeight=Math.max(1,r.height);
+  const nextDpr=Math.min(window.devicePixelRatio||1,1.5);
+  if(nextWidth===boardWidth&&nextHeight===boardHeight&&nextDpr===dpr)return;
+  boardWidth=nextWidth;boardHeight=nextHeight;dpr=nextDpr;
+  canvas.width=Math.round(boardWidth*dpr);
+  canvas.height=Math.round(boardHeight*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  x=Math.max(0,Math.min(boardWidth-62,x));
+  if(!active)drawGame();
+}
+if('ResizeObserver' in window){new ResizeObserver(resizeGame).observe(board)}
+else{addEventListener('resize',resizeGame,{passive:true})}
+
+function openGame(){
+  modal.classList.add('open');modal.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  resizeGame();setupGame();
+}
+function closeGame(){
+  modal.classList.remove('open');modal.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';stopGame();
+}
+$('#openGame').addEventListener('click',openGame);
+$('#closeGame').addEventListener('click',closeGame);
 modal.addEventListener('click',e=>{if(e.target===modal)closeGame()});
-function stopGame(){active=false;cancelAnimationFrame(raf);clearInterval(clock);items.forEach(i=>i.el.remove());items=[]}
-function setupGame(){stopGame();score=0;seconds=0;shields=3;$('#score').textContent='0';$('#alive').textContent='00:00';$('#overlay');overlay.style.display='grid';overlay.innerHTML='<div><strong>ACCESS THE FIREWALL</strong><p>Catch pink data packets for +10 points.<br>Avoid malware. You have 3 shields.<br>Move with ← → / A D or drag on the board.<br><br>NO COUNTDOWN · SURVIVE AS LONG AS YOU CAN</p><button class="btn primary" id="startGame">START DEFENCE ↗</button></div>';$('#startGame').addEventListener('click',startGame)}
-function startGame(){setupGame();active=true;overlay.style.display='none';x=(board.clientWidth-62)/2;setPlayer();lastSpawn=0;lastFrame=0;clock=setInterval(()=>{if(active){seconds++;$('#alive').textContent=fmt(seconds)}},1000);raf=requestAnimationFrame(loop)}
-function setPlayer(){x=Math.max(0,Math.min(board.clientWidth-62,x));player.style.left=x+'px'}
-function spawn(){const good=Math.random()>.3,el=document.createElement('div');el.className='fall '+(good?'good':'bad');el.textContent=good?'✦':'☣';const ix=Math.random()*(board.clientWidth-24);el.style.left=ix+'px';el.style.top='-28px';board.appendChild(el);items.push({el,x:ix,y:-28,good,speed:2+Math.random()*2+Math.min(seconds*.025,3)})}
-function loop(ts){if(!active)return;const dt=Math.min(32,ts-(lastFrame||ts));lastFrame=ts;if(ts-lastSpawn>Math.max(260,720-Math.min(seconds*3,350))){spawn();lastSpawn=ts}
- const pr=player.getBoundingClientRect(),br=board.getBoundingClientRect(),px=pr.left-br.left,py=pr.top-br.top;
- items=items.filter(it=>{it.y+=it.speed*dt/16.67;it.el.style.top=it.y+'px';const hit=it.y+20>=py&&it.y<py+20&&it.x+20>px&&it.x<px+62;if(hit){it.el.remove();if(it.good){score+=10;$('#score').textContent=score}else{shields--;if(shields<=0)finish()}return false}if(it.y>board.clientHeight){it.el.remove();return false}return true});
- if(active)raf=requestAnimationFrame(loop)}
-function finish(){if(!active)return;stopGame();const newBest=score>best,newTime=seconds>bestSeconds;if(newBest){best=score;try{localStorage.setItem('ncFirewallBest',best)}catch(e){}}if(newTime){bestSeconds=seconds;try{localStorage.setItem('ncFirewallBestTime',bestSeconds)}catch(e){}}showRecords();overlay.style.display='grid';overlay.innerHTML=`<div><strong>SHIELDS DOWN // RUN COMPLETE</strong><p>DATA SECURED: ${score} POINTS<br>SURVIVAL TIME: ${fmt(seconds)}<br>BEST SCORE: ${best}${newBest?' · NEW RECORD!':''}<br>LONGEST TIME: ${fmt(bestSeconds)}${newTime?' · NEW RECORD!':''}</p><button class="btn primary" id="again">PLAY AGAIN ↗</button></div>`;$('#again').addEventListener('click',startGame)}
+
+function stopGame(){
+  active=false;
+  if(raf)cancelAnimationFrame(raf);
+  raf=0;lastFrame=0;keys={};pointerDown=false;
+}
+function setupGame(){
+  stopGame();score=0;seconds=0;shields=3;elapsed=0;spawnElapsed=0;
+  lastDisplayedSecond=-1;items=[];
+  $('#score').textContent='0';$('#alive').textContent='00:00';
+  overlay.style.display='grid';
+  overlay.innerHTML='<div><strong>ACCESS THE FIREWALL</strong><p>Catch pink data packets for +10 points.<br>Avoid malware. You have 3 shields.<br>Move with ← → / A D or drag on the board.<br><br>NO COUNTDOWN · SURVIVE AS LONG AS YOU CAN</p><button class="btn primary" id="startGame">START DEFENCE ↗</button></div>';
+  $('#startGame').addEventListener('click',startGame);
+  resizeGame();drawGame();
+}
+function startGame(){
+  setupGame();active=true;overlay.style.display='none';
+  x=(boardWidth-62)/2;lastFrame=0;
+  raf=requestAnimationFrame(loop);
+}
+function spawn(){
+  const good=Math.random()>.3;
+  const radius=good?10:12;
+  items.push({
+    x:radius+Math.random()*Math.max(1,boardWidth-radius*2),
+    y:-radius-2,r:radius,good,
+    speed:115+Math.random()*95+Math.min(seconds*.9,150)
+  });
+}
+function drawGame(){
+  if(!ctx||!boardWidth||!boardHeight)return;
+  ctx.clearRect(0,0,boardWidth,boardHeight);
+  ctx.save();ctx.strokeStyle='rgba(197,167,245,.10)';ctx.lineWidth=1;
+  ctx.beginPath();
+  for(let gx=0;gx<boardWidth;gx+=28){ctx.moveTo(gx,0);ctx.lineTo(gx,boardHeight)}
+  for(let gy=0;gy<boardHeight;gy+=28){ctx.moveTo(0,gy);ctx.lineTo(boardWidth,gy)}
+  ctx.stroke();ctx.restore();
+
+  for(const item of items){
+    ctx.save();
+    ctx.shadowBlur=item.good?13:9;
+    ctx.shadowColor=item.good?'#d7bfff':'#c5a7f5';
+    ctx.fillStyle=item.good?'#f4eaff':'#c5a7f5';
+    ctx.font=`bold ${item.r*2}px Arial`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(item.good?'✦':'☣',item.x,item.y);
+    ctx.restore();
+  }
+  const py=boardHeight-32;
+  const gradient=ctx.createLinearGradient(x,0,x+62,0);
+  gradient.addColorStop(0,'#a98bd8');gradient.addColorStop(.5,'#f6f1fc');gradient.addColorStop(1,'#a98bd8');
+  ctx.save();ctx.shadowColor='rgba(197,167,245,.55)';ctx.shadowBlur=15;
+  ctx.fillStyle=gradient;ctx.beginPath();
+  ctx.moveTo(x+10,py);ctx.lineTo(x+52,py);ctx.lineTo(x+62,py+15);ctx.lineTo(x,py+15);
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+function loop(ts){
+  if(!active)return;
+  const dt=lastFrame?Math.min((ts-lastFrame)/1000,.05):0;
+  lastFrame=ts;elapsed+=dt;seconds=Math.floor(elapsed);
+  if(seconds!==lastDisplayedSecond){
+    lastDisplayedSecond=seconds;$('#alive').textContent=fmt(seconds);
+  }
+
+  const moveSpeed=Math.max(260,boardWidth*.9);
+  if(keys.ArrowLeft||keys.a||keys.A)x-=moveSpeed*dt;
+  if(keys.ArrowRight||keys.d||keys.D)x+=moveSpeed*dt;
+  x=Math.max(0,Math.min(boardWidth-62,x));
+
+  spawnElapsed+=dt;
+  const spawnEvery=Math.max(.28,.78-Math.min(seconds*.0035,.36));
+  if(spawnElapsed>=spawnEvery){spawn();spawnElapsed=0}
+
+  const playerY=boardHeight-32,playerLeft=x,playerRight=x+62;
+  const kept=[];
+  for(const item of items){
+    item.y+=item.speed*dt;
+    const hit=item.y+item.r>=playerY&&item.y-item.r<=playerY+15&&
+      item.x+item.r>playerLeft&&item.x-item.r<playerRight;
+    if(hit){
+      if(item.good){score+=10;$('#score').textContent=score}
+      else{shields--;if(shields<=0){finish();return}}
+      continue;
+    }
+    if(item.y-item.r<=boardHeight+5)kept.push(item);
+  }
+  items=kept;drawGame();
+  raf=requestAnimationFrame(loop);
+}
+function finish(){
+  if(!active)return;
+  stopGame();
+  const newBest=score>best,newTime=seconds>bestSeconds;
+  if(newBest){best=score;try{localStorage.setItem('ncFirewallBest',String(best))}catch(e){}}
+  if(newTime){bestSeconds=seconds;try{localStorage.setItem('ncFirewallBestTime',String(bestSeconds))}catch(e){}}
+  showRecords();overlay.style.display='grid';
+  overlay.innerHTML=`<div><strong>SHIELDS DOWN // RUN COMPLETE</strong><p>DATA SECURED: ${score} POINTS<br>SURVIVAL TIME: ${fmt(seconds)}<br>BEST SCORE: ${best}${newBest?' · NEW RECORD!':''}<br>LONGEST TIME: ${fmt(bestSeconds)}${newTime?' · NEW RECORD!':''}</p><button class="btn primary" id="again">PLAY AGAIN ↗</button></div>`;
+  $('#again').addEventListener('click',startGame);
+}
+function moveToPointer(e){
+  const r=board.getBoundingClientRect();
+  x=Math.max(0,Math.min(boardWidth-62,e.clientX-r.left-31));
+}
+board.addEventListener('pointerdown',e=>{
+  if(!active)return;
+  pointerDown=true;board.setPointerCapture?.(e.pointerId);moveToPointer(e);
+});
+board.addEventListener('pointermove',e=>{if(active&&pointerDown)moveToPointer(e)});
+function releasePointer(){pointerDown=false}
+board.addEventListener('pointerup',releasePointer);
+board.addEventListener('pointercancel',releasePointer);
+board.addEventListener('lostpointercapture',releasePointer);
+
 addEventListener('keydown',e=>{
-  if(['ArrowLeft','ArrowRight','a','A','d','D'].includes(e.key)&&active){e.preventDefault();keys[e.key]=true}
+  if(['ArrowLeft','ArrowRight','a','A','d','D'].includes(e.key)&&active){
+    e.preventDefault();keys[e.key]=true;
+  }
   if(e.key==='Escape'){
-    if(modal.classList.contains('open')) closeGame();
+    if(modal.classList.contains('open'))closeGame();
     if(links.classList.contains('show')){
       links.classList.remove('show');
       menu.setAttribute('aria-expanded','false');
@@ -1128,12 +1271,8 @@ addEventListener('keydown',e=>{
     }
   }
 });
-addEventListener('keyup',e=>keys[e.key]=false);
-function keyMove(){if(active){if(keys.ArrowLeft||keys.a||keys.A)x-=6;if(keys.ArrowRight||keys.d||keys.D)x+=6;setPlayer()}requestAnimationFrame(keyMove)}keyMove();
-function pointerMove(e){if(!active)return;const r=board.getBoundingClientRect();x=e.clientX-r.left-31;setPlayer()}
-board.addEventListener('pointerdown',e=>{if(active){board.setPointerCapture?.(e.pointerId);pointerMove(e)}});
-board.addEventListener('pointermove',e=>{if(active&&e.buttons)pointerMove(e)});
-if(matchMedia('(pointer:fine)').matches){document.querySelectorAll('.skill-card,.project-card,.info-card,.research-card,.contact-card').forEach(card=>{card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect(),a=(e.clientX-r.left)/r.width,b=(e.clientY-r.top)/r.height;card.style.transform=`perspective(900px) rotateX(${(0.5-b)*5}deg) rotateY(${(a-.5)*7}deg) translateY(-4px)`});card.addEventListener('pointerleave',()=>card.style.transform='')})}
+addEventListener('keyup',e=>{keys[e.key]=false});
+
 </script>
 </body>
 </html>
